@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33815.320
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seminar_LO_Algebra", "Seminar_LO_Algebra\Seminar_LO_Algebra.csproj", "{ECF5F175-74A7-46BE-9F11-2DEBD146DF5C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ECF5F175-74A7-46BE-9F11-2DEBD146DF5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECF5F175-74A7-46BE-9F11-2DEBD146DF5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECF5F175-74A7-46BE-9F11-2DEBD146DF5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECF5F175-74A7-46BE-9F11-2DEBD146DF5C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {53493D8A-BA8A-4CE6-AA5D-98B54998BEB1}
+	EndGlobalSection
+EndGlobal
