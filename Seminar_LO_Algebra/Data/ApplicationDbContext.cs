@@ -103,7 +103,7 @@ namespace Seminar_LO_Algebra.Data
             });
             builder.Entity<ProductImage>().HasData(new ProductImage
             {
-                Id = 1,
+                Id = 2,
                 ProductId = 2,
                 IsMainImage = true,
                 Title = "RedWhite&Blue",
