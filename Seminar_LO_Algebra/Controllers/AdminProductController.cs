@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Seminar_LO_Algebra.Data;
@@ -12,40 +12,40 @@ using Seminar_LO_Algebra.Models;
 
 namespace Seminar_LO_Algebra.Controllers
 {
-    [Authorize(Roles ="Admin,Moderator")]
-    public class AdminCategoryController : Controller
+    [Authorize(Roles = "Admin,Moderator")]
+    public class AdminProductController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public AdminCategoryController(ApplicationDbContext context)
+        public AdminProductController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-     
+        // GET: AdminProduct
         public async Task<IActionResult> Index()
         {
-              return _context.Category != null ? 
-                          View(await _context.Category.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Category'  is null.");
+              return _context.Product != null ? 
+                          View(await _context.Product.ToListAsync()) :
+                          Problem("Entity set 'ApplicationDbContext.Product'  is null.");
         }
 
-        
+        // GET: AdminProduct/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Category == null)
+            if (id == null || _context.Product == null)
             {
                 return NotFound();
             }
 
-            var category = await _context.Category
+            var product = await _context.Product
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (category == null)
+            if (product == null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            return View(product);
         }
 
        
@@ -54,59 +54,61 @@ namespace Seminar_LO_Algebra.Controllers
             return View();
         }
 
-      
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title")] Category category)
-        {
-            ModelState.Remove("ProductCategories");
-            if (ModelState.IsValid)
-            {
-                _context.Add(category);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(category);
-        }
-
-      
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.Category == null)
-            {
-                return NotFound();
-            }
-
-            var category = await _context.Category.FindAsync(id);
-            if (category == null)
-            {
-                return NotFound();
-            }
-            return View(category);
-        }
-
        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title")] Category category)
+        public async Task<IActionResult> Create([Bind("Id,Title,Author,Active,Description,Quantity,Price")] Product product)
         {
-            if (id != category.Id)
+            ModelState.Remove("ProductCategories");
+            ModelState.Remove("ProductImages");
+            ModelState.Remove("OrderItems");
+            if (ModelState.IsValid)
+            {
+                _context.Add(product);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(product);
+        }
+
+        
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null || _context.Product == null)
             {
                 return NotFound();
             }
 
-            ModelState.Remove("ProductCategories");
+            var product = await _context.Product.FindAsync(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            product.ProductImages = _context.ProductImage.Where(pi=>pi.ProductId==product.Id).ToList();
+            product.ProductCategories= _context.ProductCategory.Where(pc=>pc.ProductId==product.Id).ToList();
+            ViewBag.Categories = _context.Category.ToList();
+            return View(product);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Author,Active,Description,Quantity,Price")] Product product)
+        {
+            if (id != product.Id)
+            {
+                return NotFound();
+            }
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(category);
+                    _context.Update(product);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CategoryExists(category.Id))
+                    if (!ProductExists(product.Id))
                     {
                         return NotFound();
                     }
@@ -117,49 +119,49 @@ namespace Seminar_LO_Algebra.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(category);
+            return View(product);
         }
 
-       
+        // GET: AdminProduct/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Category == null)
+            if (id == null || _context.Product == null)
             {
                 return NotFound();
             }
 
-            var category = await _context.Category
+            var product = await _context.Product
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (category == null)
+            if (product == null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            return View(product);
         }
 
-        
+        // POST: AdminProduct/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Category == null)
+            if (_context.Product == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Category'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Product'  is null.");
             }
-            var category = await _context.Category.FindAsync(id);
-            if (category != null)
+            var product = await _context.Product.FindAsync(id);
+            if (product != null)
             {
-                _context.Category.Remove(category);
+                _context.Product.Remove(product);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CategoryExists(int id)
+        private bool ProductExists(int id)
         {
-          return (_context.Category?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Product?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
