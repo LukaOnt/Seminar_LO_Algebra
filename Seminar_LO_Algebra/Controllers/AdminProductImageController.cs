@@ -97,7 +97,7 @@ namespace Seminar_LO_Algebra.Controllers
         // GET: AdminProductImage/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            return RedirectToAction("Index", "AdminProduct");
+            //return RedirectToAction("Index", "AdminProduct");
 
             if (id == null || _context.ProductImage == null)
             {
