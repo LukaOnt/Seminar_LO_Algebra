@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Seminar_LO_Algebra.Data;
@@ -12,7 +12,7 @@ using Seminar_LO_Algebra.Models;
 
 namespace Seminar_LO_Algebra.Controllers
 {
-    [Authorize(Roles ="Admin,Moderator")]
+    [Authorize(Roles = "Admin,Moderator")]
     public class AdminCategoryController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,7 +22,7 @@ namespace Seminar_LO_Algebra.Controllers
             _context = context;
         }
 
-     
+        // GET: AdminCategory
         public async Task<IActionResult> Index()
         {
               return _context.Category != null ? 
@@ -30,7 +30,7 @@ namespace Seminar_LO_Algebra.Controllers
                           Problem("Entity set 'ApplicationDbContext.Category'  is null.");
         }
 
-        
+        // GET: AdminCategory/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Category == null)
@@ -48,13 +48,13 @@ namespace Seminar_LO_Algebra.Controllers
             return View(category);
         }
 
-       
+        // GET: AdminCategory/Create
         public IActionResult Create()
         {
             return View();
         }
 
-      
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title")] Category category)
@@ -69,7 +69,7 @@ namespace Seminar_LO_Algebra.Controllers
             return View(category);
         }
 
-      
+        // GET: AdminCategory/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Category == null)
@@ -85,7 +85,9 @@ namespace Seminar_LO_Algebra.Controllers
             return View(category);
         }
 
-       
+        // POST: AdminCategory/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title")] Category category)
@@ -94,9 +96,7 @@ namespace Seminar_LO_Algebra.Controllers
             {
                 return NotFound();
             }
-
             ModelState.Remove("ProductCategories");
-
             if (ModelState.IsValid)
             {
                 try
@@ -120,7 +120,7 @@ namespace Seminar_LO_Algebra.Controllers
             return View(category);
         }
 
-       
+        // GET: AdminCategory/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Category == null)
@@ -138,7 +138,7 @@ namespace Seminar_LO_Algebra.Controllers
             return View(category);
         }
 
-        
+        // POST: AdminCategory/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

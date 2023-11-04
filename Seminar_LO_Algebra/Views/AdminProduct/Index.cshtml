@@ -16,6 +16,9 @@
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
+                Book Cover
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Author)
             </th>
             <th>
@@ -23,6 +26,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                Categories
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Quantity)
@@ -39,6 +45,27 @@
             <td>
                     <b> @Html.DisplayFor(modelItem => item.Title) </b>
             </td>
+                <td>
+                    @{
+                        try
+                        {
+                            var image = item.ProductImages.FirstOrDefault(x => x.IsMainImage == true);
+                            if (image != null)
+                            {
+                                <img src="@image.FileName" alt="@item.Title" height="100" />
+                            }
+                            else
+                            {
+                                <img src="~/images/noimage.png" alt="@item.Title" height="100" />
+                            }
+                        }
+                        catch
+                        {
+                            <img src="~/images/noimage.png" alt="@item.Title" height="100" />
+                        }
+                    }
+
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Author)
             </td>
@@ -48,6 +75,21 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
+            <td>
+                @if(item.ProductCategories==null)
+                {
+                        <p >No Category assigned</p>
+                }
+                else
+                {
+                    @foreach (var category in item.ProductCategories)
+                    {
+                        var cat = (ViewBag.Categories as List<Category>).FirstOrDefault(x => x.Id == category.CategoryId);
+                        <span>@cat.Title</span> <br />
+                    }
+                    }
+            </td>
+               
             <td>
                 @Html.DisplayFor(modelItem => item.Quantity)
             </td>

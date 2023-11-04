@@ -25,9 +25,16 @@ namespace Seminar_LO_Algebra.Controllers
         // GET: AdminProduct
         public async Task<IActionResult> Index()
         {
-              return _context.Product != null ? 
-                          View(await _context.Product.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Product'  is null.");
+            if (_context.Product == null)
+                return Problem("Entity set 'ApplicationDbContext.Product'  is null.");
+            var products = await _context.Product.ToListAsync();
+            foreach (var product in products)
+            {
+                product.ProductImages = _context.ProductImage.Where(pi => pi.ProductId == product.Id).ToList();
+                product.ProductCategories = _context.ProductCategory.Where(pc => pc.ProductId == product.Id).ToList();
+            }
+            ViewBag.Categories = _context.Category.ToList();
+            return View(products);
         }
 
         // GET: AdminProduct/Details/5
@@ -84,8 +91,8 @@ namespace Seminar_LO_Algebra.Controllers
             {
                 return NotFound();
             }
-            product.ProductImages = _context.ProductImage.Where(pi=>pi.ProductId==product.Id).ToList();
-            product.ProductCategories= _context.ProductCategory.Where(pc=>pc.ProductId==product.Id).ToList();
+            product.ProductImages = _context.ProductImage.Where(pi => pi.ProductId == product.Id).ToList();
+            product.ProductCategories = _context.ProductCategory.Where(pc => pc.ProductId == product.Id).ToList();
             ViewBag.Categories = _context.Category.ToList();
             return View(product);
         }
@@ -98,7 +105,9 @@ namespace Seminar_LO_Algebra.Controllers
             {
                 return NotFound();
             }
-
+            ModelState.Remove("ProductCategories");
+            ModelState.Remove("OrderItems");
+            ModelState.Remove("ProductImages");
             if (ModelState.IsValid)
             {
                 try
@@ -120,6 +129,27 @@ namespace Seminar_LO_Algebra.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(product);
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditCategory(int id)
+        {
+            List<Category> categories = _context.Category.ToList();
+            foreach (var cat in categories)
+            {
+                var checkbox = Request.Form[cat.Title];
+                if (checkbox.Contains("true"))
+                {
+                    if (_context.ProductCategory.FirstOrDefault(x => x.CategoryId == cat.Id && x.ProductId == id) == null)
+                        _context.ProductCategory.Add(new ProductCategory() { CategoryId = cat.Id, ProductId = id });
+                }
+                else
+                {
+                    var p = _context.ProductCategory.FirstOrDefault(x => x.CategoryId == cat.Id && x.ProductId == id);
+                    if (p != null) _context.ProductCategory.Remove(p);
+                }
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Edit), new { id });
         }
 
         // GET: AdminProduct/Delete/5
