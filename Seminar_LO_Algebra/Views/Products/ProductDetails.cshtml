@@ -35,7 +35,7 @@
         </button>
         <button class="carousel-control-next" type="button" data-bs-target="#imagecarousel" data-bs-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
+            <span class="visually-hidden">Next</span><
         </button>
     </div>
     <hr />
@@ -47,10 +47,19 @@
             @Html.DisplayFor(model => model.Description)
         </dd>
         <dt class = "col-sm-2">
+            
             @Html.DisplayNameFor(model => model.Quantity)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Quantity)
+            @if (Model.Quantity > 0)
+            {
+                <p>Product is available</p>
+            }
+            else
+            {
+                <p>Out of stock!!!</p>
+            }
+            @*@Html.DisplayFor(model => model.Quantity)*@
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Price)

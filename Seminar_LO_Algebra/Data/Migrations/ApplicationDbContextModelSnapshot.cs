@@ -263,7 +263,7 @@ namespace Seminar_LO_Algebra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category");
+                    b.ToTable("Category", (string)null);
 
                     b.HasData(
                         new
@@ -393,7 +393,7 @@ namespace Seminar_LO_Algebra.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Order");
+                    b.ToTable("Order", (string)null);
                 });
 
             modelBuilder.Entity("Seminar_LO_Algebra.Models.OrderItem", b =>
@@ -422,7 +422,7 @@ namespace Seminar_LO_Algebra.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderItem");
+                    b.ToTable("OrderItem", (string)null);
                 });
 
             modelBuilder.Entity("Seminar_LO_Algebra.Models.Product", b =>
@@ -457,7 +457,7 @@ namespace Seminar_LO_Algebra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Product");
+                    b.ToTable("Product", (string)null);
 
                     b.HasData(
                         new
@@ -502,7 +502,7 @@ namespace Seminar_LO_Algebra.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductCategory");
+                    b.ToTable("ProductCategory", (string)null);
 
                     b.HasData(
                         new
@@ -547,7 +547,7 @@ namespace Seminar_LO_Algebra.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductImage");
+                    b.ToTable("ProductImage", (string)null);
 
                     b.HasData(
                         new

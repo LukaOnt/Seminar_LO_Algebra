@@ -122,7 +122,56 @@ namespace Seminar_LO_Algebra.Data
                 CategoryId = 3
             });
 
+            //Dodano nakon migracije
 
+            builder.Entity<Product>().HasData(new Product
+            {
+                Id = 4,
+                Title = "The Raging storm",
+                Author = "Ann Cleves",
+                Description = "Detective Matthew Venn returns in The Raging Storm, the next captivating novel in the Two Rivers series from Ann Cleeves. When enigmatic sailor Jem Rosco arrives in Greystone, Devon, the town are delighted to have a celebrity in their midst. But when he disappears and is later found dead during a storm, DI Matthew Venn faces an uncomfortable case. Having left the Barum Brethren community in Greystone, Venn's judgment is clouded by superstitions and rumors as another body is discovered in Scully Cove. Isolated by the storm, Venn and his team embark on a perilous investigation, unaware that their own lives may be at risk. ",
+                Active = true,
+                Quantity = 4,
+                Price = 35.99m,
+            });
+            builder.Entity<ProductCategory>().HasData(new ProductCategory
+            {
+                Id = 3,
+                ProductId = 4,
+                CategoryId = 4
+            });
+            builder.Entity<ProductImage>().HasData(new ProductImage
+            {
+                Id = 4,
+                ProductId = 4,
+                IsMainImage = true,
+                Title = "ancleve",
+                FileName = "/images/ancleve.png"
+            });
+            builder.Entity<Product>().HasData(new Product
+            {
+                Id = 5,
+                Title = "Some people need killing",
+                Author = "Patricia Evangelista",
+                Description = "In 2016, Rodrigo Duterte was elected President of the Philippines after campaigning on the promise of slaughtering three million drug addicts. In this unflinching account of the ensuing violence, a Filipina trauma journalist narrates six years of the country’s drug war, during which she spent her evenings “in the mechanical absorption of organized killing.” The book, conceived as a record of extrajudicial deaths, interweaves snippets of memoir that chart Evangelista’s personal evolution alongside that of her country under Duterte. In this period, she became “a citizen of a nation I cannot recognize as my own.”",
+                Active = true,
+                Quantity = 10,
+                Price = 37.99m,
+            });
+            builder.Entity<ProductCategory>().HasData(new ProductCategory
+            {
+                Id = 4,
+                ProductId = 5,
+                CategoryId = 4
+            });
+            builder.Entity<ProductImage>().HasData(new ProductImage
+            {
+                Id = 5,
+                ProductId = 4,
+                IsMainImage = true,
+                Title = "patricia_evang",
+                FileName = "/images/patricia_evang.png"
+            });
             base.OnModelCreating(builder);
         }
     }
